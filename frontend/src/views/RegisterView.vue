@@ -29,7 +29,7 @@ async function handleRegister() {
 
   try {
 
-    const response = await fetchApi('/api/register', {
+    const response = await fetchApi('/api/user', {
       method: 'POST',
       body: JSON.stringify({
         name: form.value.name,
