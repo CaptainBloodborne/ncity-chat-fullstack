@@ -15,7 +15,7 @@ services:
     ports:
       - "5432:5432"
   backend:
-      image: cyberpich2077/ncity:0.1
+      image: cyberpich2077/ncity:0.2
       restart: always
       ports:
         - "8000:8000"

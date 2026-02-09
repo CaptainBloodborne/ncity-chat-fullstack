@@ -1,6 +1,8 @@
 use async_trait::async_trait;
 use sqlx::query_as;
 use uuid::Uuid;
+use std::str::FromStr;
+
 
 use crate::{adapters::db::postgres::PostgresChatRepo, application::{AppResult, repositories::chat::ChatRepo}, domain::entities::chat::Chat};
 
@@ -41,9 +43,11 @@ impl ChatRepo for PostgresChatRepo {
     async fn delete_chat_by_id(&self, id: String) -> AppResult<()> {
         let query = "DELETE FROM chats WHERE id = $1";
 
+        let chat_id = Uuid::from_str(&id)?;
+
         let _res = sqlx::query(
             query
-        ).bind(id)
+        ).bind(chat_id)
         .execute(&self.pool)
         .await?;
 
