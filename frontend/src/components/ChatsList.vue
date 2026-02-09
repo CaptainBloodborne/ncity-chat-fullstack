@@ -109,7 +109,7 @@ onMounted(() => {
 
         <select v-model="sortKey" class="border p-2 rounded bg-white focus:ring-2 focus:ring-indigo-500 outline-none">
           <option value="name">Сортировка по имени</option>
-          <option value="users">Сортировка по популярности</option>
+          <option value="users_count">Сортировка по популярности</option>
         </select>
       </div>
 
