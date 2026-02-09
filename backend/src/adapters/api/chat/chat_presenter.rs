@@ -5,11 +5,11 @@ use crate::domain::entities::chat::Chat;
 
 #[derive(Debug, Serialize)]
 pub struct ChatPresenter {
-    id: Uuid,
-    name: String,
-    description: String,
-    users_count: u64,
-    location: String,
+    pub id: Uuid,
+    pub name: String,
+    pub description: String,
+    pub users_count: u64,
+    pub location: String,
 }
 
 impl From<Chat> for ChatPresenter {

@@ -12,8 +12,7 @@ async function createChat() {
     isSubmitting.value = true
     try {
         // Fake API call
-        console.log("Creating chat:", newChat.value)
-        // await api('/api/chats', { method: 'POST', body: JSON.stringify(newChat.value) })
+        await fetchApi('/api/admin/chat', { method: 'POST', body: JSON.stringify(newChat.value) })
 
         alert(`City Chat "${newChat.value.name}" created!`)
         newChat.value = {

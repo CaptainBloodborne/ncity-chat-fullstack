@@ -4,7 +4,7 @@ use uuid::Uuid;
 use std::str::FromStr;
 
 
-use crate::{adapters::db::postgres::PostgresChatRepo, application::{AppResult, repositories::chat::ChatRepo}, domain::entities::chat::Chat};
+use crate::{adapters::{api::chat::chat_controller::CreateChatPayload, db::postgres::PostgresChatRepo}, application::{AppResult, repositories::chat::ChatRepo}, domain::entities::chat::Chat};
 
 #[derive(Debug, sqlx::FromRow)]
 struct ChatDB{
@@ -24,6 +24,24 @@ impl From<ChatDB> for Chat {
 
 #[async_trait]
 impl ChatRepo for PostgresChatRepo {
+    async fn add_chat(&self, payload: CreateChatPayload) -> AppResult<Chat> {
+        let chat = sqlx::query_as!(
+            ChatDB,
+            r#"insert into chats(id,name,users_count,location,description)
+            values ($1, $2, $3, $4, $5)
+                returning id,name,users_count,location,description"#,
+            Uuid::new_v4(),
+            payload.name,
+            payload.users_count,
+            payload.location,
+            payload.description,
+        )
+        .fetch_one(&self.pool)
+        .await?;
+
+        Ok(chat.into())
+    }
+
     async fn get_chats(&self) -> AppResult<Vec<Chat>> {
 
         let chats_from_db = query_as!(

@@ -1,0 +1,50 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "insert into chats(id,name,users_count,location,description)\n            values ($1, $2, $3, $4, $5)\n                returning id,name,users_count,location,description",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 1,
+        "name": "name",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 2,
+        "name": "users_count",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 3,
+        "name": "location",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 4,
+        "name": "description",
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Uuid",
+        "Text",
+        "Int8",
+        "Text",
+        "Text"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "e44b395c6daa272f59a24342762c26c4c4953d66ceae43499c60b560c2391167"
+}

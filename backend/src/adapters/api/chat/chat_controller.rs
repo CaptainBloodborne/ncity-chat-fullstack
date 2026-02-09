@@ -1,4 +1,4 @@
-use axum::{Json, Router, extract::State, middleware, routing::{delete, get}};
+use axum::{Json, Router, extract::State, middleware, routing::{delete, get, post}};
 use serde::Deserialize;
 use serde_json::{Value, json};
 
@@ -6,11 +6,34 @@ use crate::{adapters::api::{app_state::AppState, chat::chat_presenter::ChatPrese
 
 pub fn chat_router() -> Router<AppState> {
     let router = Router::new()
+        .route("/api/admin/chat", post(add_new_chat))
         .route("/api/admin/chat", delete(delete_chat))
         .route("/api/chats", get(get_chats))
         .route_layer(middleware::from_fn(middlewares::require_auth));
 
     router
+}
+
+#[derive(Debug, Deserialize)]
+pub struct CreateChatPayload {
+    pub name: String,
+    pub users_count: i64,
+    pub location: String,
+    pub description: String,
+}
+
+async fn add_new_chat(
+    State(app_state): State<AppState>,
+    Json(payload): Json<CreateChatPayload>
+) -> AppResult<Json<ChatPresenter>> {
+    let chat = app_state.use_cases.add_new_chat(payload).await?;
+
+
+    Ok(
+        Json(
+            chat
+        )
+    )
 }
 
 // #[cfg_attr(axum_macros::debug_handler, debug_handler)]

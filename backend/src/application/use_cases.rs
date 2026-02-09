@@ -3,7 +3,7 @@ use std::sync::Arc;
 use secrecy::ExposeSecret;
 
 use crate::{
-    adapters::crypto::token::{Token, generate_token, validate_token},
+    adapters::{api::chat::{chat_controller::CreateChatPayload, chat_presenter::ChatPresenter}, crypto::token::{Token, generate_token, validate_token}},
     application::{
         AppError, AppResult,
         dto::user::{
@@ -117,6 +117,20 @@ impl UseCases {
         validate_token(hasher, token).await?;
 
         Ok(())
+    }
+
+    pub async fn add_new_chat(&self, payload: CreateChatPayload) -> AppResult<ChatPresenter> {
+        let chat = self.chat_repo.add_chat(payload).await?;
+
+        let chat_present = ChatPresenter{
+            id: chat.id,
+            name: chat.name,
+            description: chat.description,
+            users_count: chat.users_count,
+            location: chat.location,
+        };
+
+        Ok(chat_present)
     }
 
     pub async fn get_chats(&self) -> AppResult<Vec<Chat>> {
