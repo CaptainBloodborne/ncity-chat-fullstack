@@ -1,10 +1,10 @@
 services:
   db:
-    container_name: postgres_container
-    image: postgres:latest
+    container_name: db
+    image: postgres:15-alpine
     restart: always
     volumes:
-            - .:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
     env_file:
       - .env
     environment:
@@ -15,7 +15,7 @@ services:
     ports:
       - "5432:5432"
   backend:
-      build: ./backend
+      image: cyberpich2077/ncity:0.1
       restart: always
       ports:
         - "8000:8000"
@@ -29,3 +29,6 @@ services:
     restart: always
     ports:
       - "3000:80"
+
+volumes:
+  postgres_data:

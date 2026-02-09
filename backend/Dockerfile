@@ -3,8 +3,9 @@ FROM rust:1.92 AS builder
 
 WORKDIR /app
 COPY . .
+
 # Build release version
-RUN SQLX_OFFLINE=true cargo build --release
+RUN cargo build --release
 
 # Stage 2: Runner (Use debian:slim or alpine if you compiled with musl)
 FROM debian:bookworm-slim
